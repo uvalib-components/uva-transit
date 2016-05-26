@@ -1,0 +1,69 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../byutv-jsonp/byutv-jsonp.html">
+
+<dom-module id="uva-transit">
+  <template>
+    <byutv-jsonp id="stops" auto url="http://feeds.transloc.com/3/stops.jsonp" on-response="_handleStops" params="{{_params}}"></byutv-jsonp>
+    <byutv-jsonp id="announcements" auto url="http://feeds.transloc.com/3/announcements.jsonp" on-response="_handleAnnouncements" params="{{_params}}"></byutv-jsonp>
+    <byutv-jsonp id="vehicles" auto url="http://feeds.transloc.com/3/vehicle_statuses.jsonp" on-response="_handleVehicles" params="{{_params}}"></byutv-jsonp>
+    <byutv-jsonp id="segments" auto url="http://feeds.transloc.com/3/segments.jsonp" on-response="_handleSegments" params="{{_params}}"></byutv-jsonp>
+    <byutv-jsonp id="routes" auto url="http://feeds.transloc.com/3/routes.jsonp" on-response="_handleRoutes" params="{{_params}}"></byutv-jsonp>
+  </template>
+
+  <script>
+  Polymer({
+
+    is: 'uva-transit',
+
+    properties: {
+      stops: {
+        type: Array,
+        value: [],
+        notify: true
+      },
+      vehicles: {
+        type: Array,
+        value: [],
+        notify: true
+      },
+      _params: {
+        type: Object,
+        value: {"include_routes":"true",contents:"true",agencies:"347"},
+      },
+    },
+    _handleStops: function(e,data){
+      this.stops=data.stops;
+    },
+    _handleVehicles: function(e,data){
+      this.vehicles=data.vehicles;
+      setTimeout(function(){this.$.vehicles.generateRequest();}.bind(this), 10);
+    },
+    _decodePoints: function(encoded, precision) {
+      precision = Math.pow(10, -precision);
+      var len = encoded.length, index=0, lat=0, lng = 0, array = [];
+      while (index < len) {
+        var b, shift = 0, result = 0;
+        do {
+          b = encoded.charCodeAt(index++) - 63;
+          result |= (b & 0x1f) << shift;
+          shift += 5;
+        } while (b >= 0x20);
+        var dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        lat += dlat;
+        shift = 0;
+        result = 0;
+        do {
+          b = encoded.charCodeAt(index++) - 63;
+          result |= (b & 0x1f) << shift;
+          shift += 5;
+        } while (b >= 0x20);
+        var dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+        lng += dlng;
+        array.push( [lat * precision, lng * precision] );
+      }
+      return array;
+    },
+
+  });
+  </script>
+</dom-module>

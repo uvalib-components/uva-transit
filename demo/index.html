@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>uva-transit demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../google-map/google-map.html">
+    <link rel="import" href="../../google-map/google-map-marker.html">
+
+    <link rel="import" href="../uva-transit.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <h3>Basic uva-transit Demo</h3>
+      <demo-snippet>
+        <template>
+
+          <template is="dom-bind" id="app">
+            <uva-transit stops={{stops}} vehicles="{{vehicles}}"></uva-transit>
+            <google-map latitude="38.035610" longitude="-78.503479" api-key="AIzaSyBxAaVYnYIkwmvR4pigOojpxvli_OxBeFs" zoom="14" style="height:500px">
+              <template is="dom-repeat" items="{{stops}}">
+                <google-map-marker latitude="{{item.position.0}}" longitude="{{item.position.1}}" title="{{item.name}}"
+                    icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAATlBMVEX/Zmb///+lpaVCQkK9TEzATU0/Pz+ioqJdJSVRICCrRERaJCSurq4zMzNUVFTMUlIeHh5OTk5paWlgYGAkJCTbWFjhWlpaWlpmKSmZmZm14r/wAAAAQ0lEQVQImWNgZGTi4+XjYWRkYBTn5uLn4hRiZJCUYAABDnYGNlYwi4WZQUAMzBIVQRJj5wCzOHkYGIVheoHmCYLNAwBfwQIRDa1rgAAAAABJRU5ErkJggg=="></google-map-marker>
+              </template>
+              <template is="dom-repeat" items="{{vehicles}}">
+                <google-map-marker latitude="{{item.position.0}}" longitude="{{item.position.1}}" title="{{item.call_name}}"></google-map-marker>
+              </template>
+            </google-map>
+          </template>
+
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>
