@@ -2,7 +2,7 @@
 
 pulls uva transit info
 
-_[Demo and API docs](https://uvalib-components.github.io/uvalib-catalog)_
+_[Demo and API docs](https://uvalib-components.github.io/uva-catalog)_
 
 ## Install the Polymer-CLI
 
